@@ -1,27 +1,31 @@
-import Pagination from '@/app/ui/invoices/pagination';
-import Search from '@/app/ui/search';
-import Table from '@/app/ui/invoices/table';
-import { CreateInvoice } from '@/app/ui/invoices/buttons';
-import { lusitana } from '@/app/ui/fonts';
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
-import { Suspense } from 'react';
-import { fetchInvoicesPages } from '@/app/lib/data';
-import { Metadata } from 'next';
+import Pagination from "@/app/ui/invoices/pagination";
+import Search from "@/app/ui/search";
+import Table from "@/app/ui/invoices/table";
+import { CreateInvoice } from "@/app/ui/invoices/buttons";
+import { lusitana } from "@/app/ui/fonts";
+import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
+import { Suspense } from "react";
+import { fetchInvoicesPages } from "@/app/lib/data";
+import { Metadata } from "next";
+import Tabs from "@/app/ui/invoices/tabs";
+import { InvoiceStatusAllType } from "@/app/lib/definitions";
 
 export const metadata: Metadata = {
-  title: 'Invoices',
+  title: "Invoices"
 };
 
 export default async function Page({
-  searchParams,
+  searchParams
 }: {
   searchParams?: {
     query?: string;
     page?: string;
+    status?: string;
   };
 }) {
-  const query = searchParams?.query || '';
+  const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
+  const status = searchParams?.status || "all";
 
   const totalPages = await fetchInvoicesPages(query);
 
@@ -34,8 +38,15 @@ export default async function Page({
         <Search placeholder="Search invoices..." />
         <CreateInvoice />
       </div>
-      <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table query={query} currentPage={currentPage} />
+      <Tabs status={status as InvoiceStatusAllType} />
+      <Suspense
+        key={query + currentPage}
+        fallback={<InvoicesTableSkeleton />}>
+        <Table
+          query={query}
+          currentPage={currentPage}
+          status={status as InvoiceStatusAllType}
+        />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
