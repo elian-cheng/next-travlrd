@@ -1,11 +1,11 @@
-name: Cron
-on:
-  schedule:
-    - cron: "0 0 * * *"
+# name: Cron
+# on:
+#   schedule:
+#     - cron: "0 0 * * *"
 
-jobs:
-  update-invoices:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call the Vercel app to update invoices
-        run: curl -X POST https://next-travlrd.vercel.app/api/update-invoices
+# jobs:
+#   update-invoices:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Call the Vercel app to update invoices
+#         run: curl -X POST https://next-travlrd.vercel.app/api/update-invoices
